@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calligraphy Generator 🎨</title>
+    <style>
+    body{
+      text-align: center;
+    }
+    form {
+        margin-top: 20px;
+    }
+    textarea {
+        width: 100%;
+        max-width: 600px;
+        height: 120px;
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid ;
+        border-radius: 8px;
+    }
+    select, button {
+        margin-top: 15px;
+        padding: 10px;
+        font-size: 16px;
+    }
+    button {
+        background: black;
+        color: white;
+    }
+    .image-container {
+        width: 600px;
+        height: 300px;
+        margin: 30px auto;
+        border: 2px solid;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        object-fit: contain;
+    }
+
+</style>
+
+</head>
+<body>
+    <h1>Calligraphy Generator 🎨</h1>
+
+    <div class="image-container">
+      {% if wordart %}
+          <img src="{{ wordart }}" alt="Generated Word Art">
+      {% endif %}
+    </div>  
+
+    <form method="POST">
+        <textarea name="text" placeholder="Input text..." required></textarea><br>
+
+        <button type="submit">Generate</button>
+        <select name="font">
+          <option value="" selected disabled>Choose Font</option>
+            {% for name in font_options %}
+                <option value="{{ name }}">{{ name }}</option>
+            {% endfor %}
+        </select>
+    </form>
+</body>
+</html>
