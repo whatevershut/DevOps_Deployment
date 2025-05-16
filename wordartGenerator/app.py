@@ -36,11 +36,9 @@ def index():
                 img = Image.new('RGB', (600, 300), color='white')
                 draw = ImageDraw.Draw(img)
                 
-                # Start with large font size
                 font_size = 100
                 font = ImageFont.truetype(font_path, font_size)
 
-                # Shrink font until it fits
                 while True:
                     bbox = draw.textbbox((0, 0), text, font=font)
                     text_width = bbox[2] - bbox[0]
@@ -51,7 +49,6 @@ def index():
                     font_size -= 2
                     font = ImageFont.truetype(font_path, font_size)
 
-                # Center text in image
                 x = (600 - text_width) // 2
                 y = (300 - text_height) // 2
 
