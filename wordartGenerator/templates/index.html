@@ -3,8 +3,9 @@
 <head>
     <title>Calligraphy Generator 🎨</title>
     <style>
-    body{
-      text-align: center;
+    body {
+        text-align: center;
+        font-family: Arial, sans-serif;
     }
     form {
         margin-top: 20px;
@@ -15,7 +16,7 @@
         height: 120px;
         padding: 10px;
         font-size: 16px;
-        border: 2px solid ;
+        border: 2px solid;
         border-radius: 8px;
     }
     select, button {
@@ -26,6 +27,8 @@
     button {
         background: black;
         color: white;
+        border: none;
+        border-radius: 5px;
     }
     .image-container {
         width: 600px;
@@ -37,29 +40,27 @@
         justify-content: center;
         object-fit: contain;
     }
-
-</style>
-
+    </style>
 </head>
 <body>
     <h1>Calligraphy Generator 🎨</h1>
 
     <div class="image-container">
-      {% if wordart %}
-          <img src="{{ wordart }}" alt="Generated Word Art">
-      {% endif %}
+        {% if wordart %}
+            <img src="{{ wordart }}" alt="Generated Word Art">
+        {% endif %}
     </div>  
 
     <form method="POST">
         <textarea name="text" placeholder="Input text..." required></textarea><br>
 
-        <button type="submit">Generate</button>
-        <select name="font">
-          <option value="" selected disabled>Choose Font</option>
+        <select name="font" required>
+            <option value="" selected disabled>Choose Font</option>
             {% for name in font_options %}
                 <option value="{{ name }}">{{ name }}</option>
             {% endfor %}
         </select>
+        <button type="submit">Generate</button>
     </form>
 </body>
 </html>
