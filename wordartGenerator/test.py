@@ -1,35 +1,42 @@
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
-import time
 
-# Start browser
-driver = webdriver.Chrome()
+# Set up Selenium WebDriver
+def setup_browser():
+    options = webdriver.ChromeOptions()
+    #options.add_argument("--headless")
+    return webdriver.Chrome(options=options)
 
-# Open your web app
-driver.get("http://127.0.0.1:5000/")
+def test_generate_calligraphy():
+    driver = setup_browser()
 
-# Input text
-textarea = driver.find_element(By.TAG_NAME, "textarea")
-textarea.clear()
-textarea.send_keys("Hello World")
+    try:
+        driver.get("http://127.0.0.1:5000/")
 
-# Choose a font
-dropdown = Select(driver.find_element(By.TAG_NAME, "select"))
-dropdown.select_by_index(1)  # or select_by_visible_text("YourFont")
+        # Fill in the textarea with text
+        textarea = driver.find_element(By.NAME, "text")
+        textarea.send_keys("Hello World")
 
-# Click Generate
-generate_btn = driver.find_element(By.XPATH, "//button[text()='Generate']")
-generate_btn.click()
+        # Select the first available font
+        select_element = Select(driver.find_element(By.NAME, "font"))
+        select_element.select_by_index(1)  # Skip the first (disabled) option
 
-# Wait for result to show
-time.sleep(3)
+        # Click the Generate button
+        driver.find_element(By.TAG_NAME, "button").click()
 
-# Validate that image is updated
-img_container = driver.find_element(By.CLASS_NAME, "image-container")
-assert img_container.is_displayed()
+        time.sleep(2)  # Wait for image generation
 
-print("Test passed!")
+        # Check if image was generated
+        image = driver.find_element(By.TAG_NAME, "img")
+        assert "data:image/png;base64" in image.get_attribute("src")
 
-driver.quit()
+        print("✅ Image generated successfully")
+
+    finally:
+        driver.quit()
+    
+if __name__ == "__main__":
+    test_generate_calligraphy()
+
