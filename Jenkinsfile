@@ -11,62 +11,69 @@ pipeline {
         timeout(time: 20, unit: 'MINUTES')
         timestamps()
     }
-    
+
     stages {
-	
-	stage('Checkout') {
+
+        stage('Checkout') {
             steps {
-                echo 'Pulling...'
+                echo 'Pulling source code...'
                 checkout scm
             }
         }
 
-	stage('Install Dependencies') {
+        stage('Install Dependencies') {
             steps {
-                echo 'Installing requirements...'
-                sh 'pip install -r requirements.txt'
+                echo 'Installing Python requirements...'
+                sh 'python3 -m pip install --user -r requirements.txt'
             }
         }
 
-	stage('Run Too') {
+        stage('Run Flask App') {
             steps {
-                echo 'Launching app locally for testing...'
+                echo 'Launching Flask app in background...'
                 sh 'nohup python3 app.py > flask.log 2>&1 & sleep 5'
             }
         }
 
-	stage('Test') {
+        stage('Test with Docker Selenium') {
             steps {
-                sh 'echo "Testing..."'
-                sh 'python3 test/test.py'
+                echo 'Running Selenium test inside Docker...'
+                sh '''
+                    docker run --rm \
+                        --network host \
+                        -v $PWD:/app \
+                        -w /app \
+                        selenium/standalone-chrome:latest \
+                        python3 test/test.py
+                '''
             }
         }
 
         stage('Build') {
             steps {
-                sh 'echo "Building..."'
-                sh "docker build -t $DOCKER_IMAGE ."
+                echo 'Building Docker image...'
+                sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'echo "Deploying with Docker..."'
-                sh """
+                echo 'Deploying Docker container...'
+                sh '''
                     docker stop $CONTAINER_NAME || true
                     docker rm $CONTAINER_NAME || true
                     docker run -d --name $CONTAINER_NAME -p 80:5000 $DOCKER_IMAGE
-                """
+                '''
             }
         }
     }
-    
+
     post {
         always {
             emailext (
                 subject: "Jenkins Build ${currentBuild.currentResult}: ${env.JOB_NAME}",
-                body: """Check console output at ${env.BUILD_URL}""",
-                to: "britneyyj923@gmail.com"
+                body: "Check console output at: ${env.BUILD_URL}",
+                to: "${env.EMAIL}"
             )
         }
     }
