@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "group5/CalligraphyGenerator:latest"
-        CONTAINER_NAME = "CalligrapyGenerator"
+        DOCKER_IMAGE = "group5/calligraphygenerator:latest"
+        CONTAINER_NAME = "calligrapygenerator"
         EMAIL = "britneyyj923@gmail.com"
     }
 
@@ -28,17 +28,17 @@ pipeline {
             }
         }
 
+	stage('Test') {
+            steps {
+                sh 'echo "Testing..."'
+                sh 'pytest test/test.py'
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'echo "Building..."'
                 sh "docker build -t $DOCKER_IMAGE ."
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'echo "Testing..."'
-                sh 'pytest test/test.py'
             }
         }
 
