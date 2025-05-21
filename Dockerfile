@@ -1,52 +1,48 @@
-FROM python:3.10-slim
+FROM debian:bookworm-slim
 
-# Install required dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    wget \
-    unzip \
     curl \
     gnupg \
-    ca-certificates \
+    unzip \
+    wget \
     fonts-liberation \
+    libxss1 \
+    libappindicator3-1 \
     libasound2 \
     libatk-bridge2.0-0 \
-    libatk1.0-0 \
-    libc6 \
-    libcairo2 \
-    libcups2 \
-    libdbus-1-3 \
-    libgdk-pixbuf2.0-0 \
     libnspr4 \
     libnss3 \
-    libx11-xcb1 \
     libxcomposite1 \
-    libxdamage1 \
     libxrandr2 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libx11-xcb1 \
+    libxcb1 \
     xdg-utils \
-    libgbm1 \
-    libgtk-3-0 \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Chrome
-RUN curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
-    apt-get update && apt-get install -y google-chrome-stable && \
+    ca-certificates \
+    --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
-# Install chromedriver (version must match Chrome)
-RUN CHROME_VERSION=$(google-chrome-stable --version | grep -oP "\\d+\\.\\d+\\.\\d+\\.") && \
-    DRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE") && \
-    wget -O /tmp/chromedriver.zip "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$DRIVER_VERSION/linux64/chromedriver-linux64.zip" && \
-    unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
-    mv /usr/local/bin/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver && \
-    chmod +x /usr/local/bin/chromedriver && \
-    rm -rf /tmp/chromedriver.zip /usr/local/bin/chromedriver-linux64
+# Add Google Chrome signing key and repository
+RUN mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /etc/apt/keyrings/google.gpg && \
+    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/google.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
+    apt-get update && \
+    apt-get install -y google-chrome-stable && \
+    rm -rf /var/lib/apt/lists/*
 
-# Set display port to avoid errors
+# Install ChromeDriver matching the installed Chrome version
+RUN CHROME_VERSION=$(google-chrome-stable --version | grep -oP "\d+\.\d+\.\d+") && \
+    DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION}") && \
+    wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip" && \
+    unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
+    chmod +x /usr/local/bin/chromedriver && \
+    rm -rf /tmp/chromedriver.zip
+
+# Optional: Set display environment variable for headless usage
 ENV DISPLAY=:99
 
-WORKDIR /app
-COPY . /app
-RUN pip install --no-cache-dir -r requirements.txt
-
-CMD ["python3", "test/test.py"]
+# Set default command
+CMD ["google-chrome-stable", "--version"]
