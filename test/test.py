@@ -5,11 +5,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
 def setup_browser():
+    temp_dir = tempfile.mkdtemp()
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument(f"--user-data-dir={tempfile.mkdtemp()}")
+    options.add_argument(f"--user-data-dir={temp_dir}")
     return webdriver.Chrome(options=options)
 
 def test_generate_calligraphy():
