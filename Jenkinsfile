@@ -1,34 +1,20 @@
 pipeline {
     agent any
-    
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/whatevershut/DevOps_Deployment.git'
+            }
+        }
         stage('Build') {
             steps {
-                sh 'echo "Building..."'
-                // Add your build commands here
+                sh 'docker build -t my-app .'
             }
         }
         stage('Test') {
             steps {
-                sh 'echo "Testing..."'
-                // Add your test commands here
+                sh 'docker run my-app npm test'  # Example test command
             }
-        }
-        stage('Deploy') {
-            steps {
-                sh 'echo "Deploying with Docker..."'
-                // Add your Docker commands here
-            }
-        }
-    }
-    
-    post {
-        always {
-            emailext (
-                subject: "Jenkins Build ${currentBuild.currentResult}: ${env.JOB_NAME}",
-                body: """Check console output at ${env.BUILD_URL}""",
-                to: "104385073@students.swinburne.edu.my"
-            )
         }
     }
 }
