@@ -15,6 +15,12 @@ pipeline {
             steps {
                 sh 'docker run my-app npm test'  # Example test command
             }
+     stage('Selenium Test') {
+    steps {
+        sh 'docker run -d --name selenium -p 4444:4444 selenium/standalone-chrome'
+        sh 'docker run --network host lyana385/my-app-test'  # Your test script
+    }
+}
         }
     }
 }
