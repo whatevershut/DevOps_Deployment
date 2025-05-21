@@ -1,26 +1,32 @@
 pipeline {
     agent any
+    tools {
+        // if you're testing a Node app
+        nodejs "NodeJS_16"
+    }
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/whatevershut/DevOps_Deployment.git'
+                git url: 'https://github.com/whatevershut/DevOps_Deployment.git', branch: 'main'
             }
         }
         stage('Build') {
             steps {
-                sh 'docker build -t my-app .'
+                sh 'echo "Building app..."'
+                // run any build commands e.g. npm install
+                sh 'npm install'
             }
         }
         stage('Test') {
             steps {
-                sh 'docker run my-app npm test'  # Example test command
+                sh 'npm test' // or `pytest`, `junit`, etc.
             }
-     stage('Selenium Test') {
-    steps {
-        sh 'docker run -d --name selenium -p 4444:4444 selenium/standalone-chrome'
-        sh 'docker run --network host lyana385/my-app-test'  # Your test script
-    }
-}
+        }
+        stage('Docker Build & Deploy') {
+            steps {
+                sh 'docker build -t lyimage .'
+                sh 'docker run -d -p 5000:5000 lyimage'
+            }
         }
     }
 }
