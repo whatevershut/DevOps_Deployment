@@ -35,19 +35,16 @@ pipeline {
             }
         }
 
-        stage('Test with Docker Selenium') {
+        stage('Test') {
             steps {
-                echo 'Running Selenium test inside Docker...'
-                sh '''
-                    docker run --rm \
-                        --network host \
-                        -v $PWD:/app \
-                        -w /app \
-                        selenium/standalone-chrome:latest \
-                        python3 test/test.py
-                '''
-            }
-        }
+        	echo 'Running Selenium test in app container...'
+        	sh """
+            	    docker build -t test-runner .
+            	    docker run --rm --network host test-runner python3 test/test.py
+        	"""
+    	    }
+	}
+
 
         stage('Build') {
             steps {
