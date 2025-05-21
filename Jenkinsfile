@@ -28,10 +28,17 @@ pipeline {
             }
         }
 
+	stage('Run Too') {
+            steps {
+                echo 'Launching app locally for testing...'
+                sh 'nohup python3 app.py > flask.log 2>&1 & sleep 5'
+            }
+        }
+
 	stage('Test') {
             steps {
                 sh 'echo "Testing..."'
-                sh 'pytest test/test.py'
+                sh 'python test/test.py'
             }
         }
 

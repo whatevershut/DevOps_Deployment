@@ -13,7 +13,7 @@ def test_generate_calligraphy():
     driver = setup_browser()
 
     try:
-        driver.get("http://127.0.0.1:5000/")
+        driver.get("http://localhost:2000/")
 
         # Fill in the textarea with text
         textarea = driver.find_element(By.NAME, "text")
