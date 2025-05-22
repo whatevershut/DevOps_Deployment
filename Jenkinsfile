@@ -29,13 +29,7 @@ pipeline {
             }
         }
 
-        stage('Run Flask App') {
-            steps {
-                echo '🚀 Launching Flask app in background...'
-                sh 'nohup python3 app.py > flask.log 2>&1 & sleep 5'
-            }
-        }
-
+        
         stage('Test') {
             steps {
                 echo '🧪 Running Selenium test using Firefox (Docker)...'
