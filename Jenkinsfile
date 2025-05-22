@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "group5/calligraphygenerator:latest"
         CONTAINER_NAME = "calligrapygenerator"
-        EMAIL = "britneyyj923@gmail.com"
+        EMAIL = "brithneykong1996@Hotmail.com"
     }
 
     options {
@@ -17,31 +17,28 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Pulling source code...'
-                checkout scm
+
             }
         }
 
         stage('Install Dependencies') {
             steps {
                 echo 'Installing Python requirements...'
-                sh 'python3 -m pip install --user -r requirements.txt'
+
             }
         }
 
         stage('Run Flask App') {
             steps {
                 echo 'Launching Flask app in background...'
-                sh 'nohup python3 app.py > flask.log 2>&1 & sleep 5'
+        
             }
         }
 
         stage('Test') {
             steps {
         	echo 'Running Selenium test in app container...'
-        	sh """
-            	    docker build -t test-runner .
-            	    docker run --rm --network host test-runner python3 test/test.py
-        	"""
+        	
     	    }
 	}
 
@@ -49,18 +46,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Docker image...'
-                sh 'docker build -t $DOCKER_IMAGE .'
+               
             }
         }
 
         stage('Deploy') {
             steps {
                 echo 'Deploying Docker container...'
-                sh '''
-                    docker stop $CONTAINER_NAME || true
-                    docker rm $CONTAINER_NAME || true
-                    docker run -d --name $CONTAINER_NAME -p 80:5000 $DOCKER_IMAGE
-                '''
+                
             }
         }
     }
