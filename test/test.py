@@ -16,7 +16,8 @@ def setup_browser():
 def test_generate_calligraphy():
     driver = setup_browser()
     try:
-        driver.get("http://host.docker.internal:2000/")
+        driver.get("http://localhost:2000/")
+
 
         textarea = driver.find_element(By.NAME, "text")
         textarea.send_keys("Hello World")

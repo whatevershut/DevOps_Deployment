@@ -16,14 +16,14 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Pulling source code...'
+                echo '📦 Pulling source code...'
                 checkout scm
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing Python requirements...'
+                echo '📥 Installing Python requirements...'
                 sh 'python3 -m pip install --upgrade pip'
                 sh 'python3 -m pip install -r requirements.txt'
             }
@@ -31,29 +31,31 @@ pipeline {
 
         stage('Run Flask App') {
             steps {
-                echo 'Launching Flask app in background...'
+                echo '🚀 Launching Flask app in background...'
                 sh 'nohup python3 app.py > flask.log 2>&1 & sleep 5'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running Selenium test using Firefox...'
-                sh 'python3 test/test.py'
-                // Assumes your test script runs Selenium with Firefox (headless)
+                echo '🧪 Running Selenium test using Firefox (Docker)...'
+                sh '''
+                    docker build -t selenium-firefox .
+                    docker run --rm --network host selenium-firefox
+                '''
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building Docker image...'
+                echo '🐳 Building Docker image...'
                 sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying Docker container...'
+                echo '📦 Deploying Docker container...'
                 sh '''
                     docker stop $CONTAINER_NAME || true
                     docker rm $CONTAINER_NAME || true
