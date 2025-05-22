@@ -32,6 +32,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Run Selenium Tests') {
+            steps {
+                echo "Running Selenium tests..."
+                // TODO: Replace below with actual test command when ready
+                sh 'echo "Run your Selenium tests here, e.g. mvn test or ./run-selenium.sh"'
+            }
+        }
     }
 
     post {
