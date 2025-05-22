@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "group5/calligraphygenerator:latest"
-        CONTAINER_NAME = "calligrapygenerator"
+        DOCKER_IMAGE = "group5/calligraphiesgenerator:latest"
+        CONTAINER_NAME = "calligrapiesgenerator"
         EMAIL = "britneyyj923@gmail.com"
     }
 
@@ -59,7 +59,7 @@ pipeline {
                 sh '''
                     docker stop $CONTAINER_NAME || true
                     docker rm $CONTAINER_NAME || true
-                    docker run -d --name $CONTAINER_NAME -p 2081:5000 $DOCKER_IMAGE
+                    docker run -d --name $CONTAINER_NAME -p 8081:5000 $DOCKER_IMAGE
                 '''
             }
         }
