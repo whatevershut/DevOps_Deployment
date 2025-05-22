@@ -1,6 +1,6 @@
 import time
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
@@ -11,7 +11,7 @@ def setup_browser():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920x1080")
-    return webdriver.Chrome(options=options)
+    return webdriver.Firefox(options=options)
 
 def test_generate_calligraphy():
     driver = setup_browser()

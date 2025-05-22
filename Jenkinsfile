@@ -24,7 +24,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing Python requirements...'
-                sh 'python3 -m pip install --user -r requirements.txt'
+                sh 'python3 -m pip install --upgrade pip'
+                sh 'python3 -m pip install -r requirements.txt'
             }
         }
 
@@ -37,14 +38,11 @@ pipeline {
 
         stage('Test') {
             steps {
-        	echo 'Running Selenium test in app container...'
-        	sh """
-            	    docker build -t test-runner .
-            	    docker run --rm --network host test-runner python3 test/test.py
-        	"""
-    	    }
-	}
-
+                echo 'Running Selenium test using Firefox...'
+                sh 'python3 test/test.py'
+                // Assumes your test script runs Selenium with Firefox (headless)
+            }
+        }
 
         stage('Build') {
             steps {
