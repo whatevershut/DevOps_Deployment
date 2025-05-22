@@ -48,4 +48,5 @@ COPY . /app
 WORKDIR /app
 
 # Run app (adjust if needed)
-CMD ["python3", "test/test.py"]
+CMD ["python3", "app.py"]
+
