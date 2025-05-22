@@ -29,7 +29,14 @@ pipeline {
             }
         }
 
-        
+        stage('Run Flask App') {
+            steps {
+                echo '🚀 Launching Flask app in background (for test only)...'
+                // ⚠️ Optional: Remove this if you're deploying Flask in Docker only
+                sh 'nohup python3 app.py > flask.log 2>&1 & sleep 5'
+            }
+        }
+
         stage('Test') {
             steps {
                 echo '🧪 Running Selenium test using Firefox (Docker)...'
@@ -43,7 +50,11 @@ pipeline {
         stage('Build') {
             steps {
                 echo '🐳 Building Docker image...'
-                sh 'docker build -t $DOCKER_IMAGE .'
+                sh '''
+                    docker stop $CONTAINER_NAME || true
+                    docker rm $CONTAINER_NAME || true
+                    docker run -d --name $CONTAINER_NAME -p 8080:5000 $DOCKER_IMAGE
+                '''
             }
         }
 
