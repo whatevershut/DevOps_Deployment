@@ -59,7 +59,7 @@ pipeline {
                 sh '''
                     docker stop $CONTAINER_NAME || true
                     docker rm $CONTAINER_NAME || true
-                    docker run -d --name $CONTAINER_NAME -p 8081:2000 $DOCKER_IMAGE
+                    docker run -d --name $CONTAINER_NAME -p 8081:5000 $DOCKER_IMAGE
                 '''
             }
         }
