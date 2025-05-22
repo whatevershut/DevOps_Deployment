@@ -40,7 +40,7 @@ pipeline {
             steps {
                 echo '🧪 Running Selenium test using Firefox (Docker)...'
                 sh '''
-                    docker build -t selenium-firefox .
+                    docker build -t selenium-firefox -f Dockerfile.test .
                     docker run --rm --network host selenium-firefox
                 '''
             }
@@ -49,7 +49,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo '🐳 Building Docker image...'
-                sh 'docker build -t $DOCKER_IMAGE .'
+                sh 'docker build -t $DOCKER_IMAGE -f Dockerfile.webapp .'
             }
         }
 
