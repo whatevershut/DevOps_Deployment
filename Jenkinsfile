@@ -6,7 +6,7 @@ pipeline {
     }
 
     tools {
-        ant 'Ant 1.10'  // Make sure this matches your Ant tool in Jenkins > Global Tool Config
+        ant 'Ant 1.10'  // Ensure this matches your Jenkins tool config
     }
 
     stages {
@@ -33,5 +33,17 @@ pipeline {
             }
         }
     }
-}
 
+    post {
+        success {
+            emailext to: 'whateverworld.shut@gmail.com',
+                     subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                     body: "Good news!\n\nBuild succeeded: ${env.BUILD_URL}"
+        }
+        failure {
+            emailext to: 'whateverworld.shut@gmail.com',
+                     subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                     body: "Build failed.\n\nCheck console: ${env.BUILD_URL}"
+        }
+    }
+}
