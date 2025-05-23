@@ -19,12 +19,17 @@ try:
 
     # Check the text content
     #phase_text = driver.find_element(By.XPATH, "//*[contains(text(), 'DevOps Team 5')]").text
-    phase_text = driver.find_element(By.CSS_SELECTOR, ".DevOps.Team.5").text
+    #phase_text = driver.find_element(By.CSS_SELECTOR, ".DevOps.Team.5").text
 
-    assert "DevOps Team 5" in phase_text, f"Expected 'DevOps Team 5 in page but found: {phase_text}"
+    #assert "DevOps Team 5" in phase_text, f"Expected 'DevOps Team 5 in page but found: {phase_text}"
+
+    # Find the h1 element and get its text
+    phase_text = driver.find_element(By.TAG_NAME, "h1").text
+
+    assert "DevOps Team 5" in phase_text, f"Expected 'DevOps Team 5' in page but found: {phase_text}"
 
     print("Test Passed: DevOps Team 5 found on front.html")
-
+    
 except Exception as e:
     print(f"Test Failed: {e}")
 
