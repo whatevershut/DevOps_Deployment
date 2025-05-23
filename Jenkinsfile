@@ -36,20 +36,25 @@ pipeline {
         stage('Run Selenium Tests') {
             steps {
                 echo "Running Selenium tests..."
-                // TODO: Replace below with actual test command when ready
-                sh 'echo "Run your Selenium tests here, e.g. mvn test or ./run-selenium.sh"'
+                sh '''
+                    echo "Installing Selenium..."
+                    pip install selenium
+
+                    echo "Running test.py..."
+                    python3 test.py
+                '''
             }
         }
     }
 
     post {
         success {
-            emailext to: 'whateverworld.shut@gmail.com',
+            emailext to: 'lyanarossle@gmail.com',
                      subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                      body: "Good news!\n\nBuild succeeded: ${env.BUILD_URL}"
         }
         failure {
-            emailext to: 'whateverworld.shut@gmail.com',
+            emailext to: 'lyanarossle@gmail.com',
                      subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                      body: "Build failed.\n\nCheck console: ${env.BUILD_URL}"
         }
