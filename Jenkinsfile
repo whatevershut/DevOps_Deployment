@@ -70,7 +70,7 @@ pipeline {
             emailext (
                 subject: "Jenkins Build ${currentBuild.currentResult}: ${env.JOB_NAME}",
                 body: "Check console output at: ${env.BUILD_URL}",
-                to: "${env.EMAIL}"
+                to: "brithneykong1996@hotmail.com"
             )
         }
     }
