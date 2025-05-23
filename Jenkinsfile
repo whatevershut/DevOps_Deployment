@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "group5/calligraphiesgenerator:latest"
         CONTAINER_NAME = "calligrapiesgenerator"
-        EMAIL = "britneyyj923@gmail.com"
+        EMAIL = "brithneykong1996@hotmail.com"
     }
 
     options {
@@ -74,4 +74,5 @@ pipeline {
             )
         }
     }
+
 }
