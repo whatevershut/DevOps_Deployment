@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DevOps Pipeline Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    .status {
+      background-color: #fff;
+      padding: 1rem;
+      margin: 2rem auto;
+      width: 60%;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .success {
+      color: green;
+    }
+    .failure {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>DevOps Pipeline Live Test Page</h1>
+  <div class="status">
+    <p>This page is deployed via <strong>GitHub → Jenkins → Docker on EC2 Instance </strong>.</p>
+    <p class="success">Current Status: Build Successful ✅</p>
+    <p>Push changes to GitHub to automatically trigger a new build and deployment.</p>
+  </div>
+</body>
+</html>
