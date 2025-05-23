@@ -18,10 +18,10 @@ try:
     time.sleep(2)  # Wait for page to load
 
     # Check the text content
-    phase_text = driver.find_element(By.CLASS_NAME, "phase").text
-    assert "Phase 4" in phase_text, f"Expected 'Phase 4' in page but found: {phase_text}"
+    phase_text = driver.find_element(By.CLASS_NAME, "DevOps Team 5").text
+    assert "DevOps Team 5" in phase_text, f"Expected 'DevOps Team 5 in page but found: {phase_text}"
 
-    print("Test Passed: Phase 4 found on front.html")
+    print("Test Passed: DevOps Team 5 found on front.html")
 
 except Exception as e:
     print(f"Test Failed: {e}")
