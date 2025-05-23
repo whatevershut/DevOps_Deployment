@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 import time
 
 # Replace with your EC2 public IP or domain
-URL = "http://<your-ec2-public-ip>"
+URL = "http://13.218.27.182"
 
 # Initialize browser (make sure chromedriver is in PATH)
 options = webdriver.ChromeOptions()
