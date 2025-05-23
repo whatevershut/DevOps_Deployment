@@ -66,12 +66,15 @@ pipeline {
     }
 
     post {
-        always {
-            emailext (
-                subject: "Jenkins Build ${currentBuild.currentResult}: ${env.JOB_NAME}",
-                body: "Check console output at: ${env.BUILD_URL}",
-                to: "brithneykong1996@hotmail.com"
-            )
+        success {
+            emailext to: 'britneyyj923@gmail.com',
+                     subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                     body: "Good news!\n\nBuild succeeded: ${env.BUILD_URL}"
+        }
+        failure {
+            emailext to: 'brithneyyj923@gmail.com',
+                     subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                     body: "Build failed.\n\nCheck console: ${env.BUILD_URL}"
         }
     }
 
